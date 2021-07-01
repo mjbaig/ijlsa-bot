@@ -4,7 +4,6 @@ import com.mjbaig.ijlsabot.bot.LeTrollBot
 import discord4j.core.GatewayDiscordClient
 import discord4j.core.event.domain.message.MessageCreateEvent
 import org.slf4j.LoggerFactory.getLogger
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -26,8 +25,9 @@ open class DiscordListener(discordClient: GatewayDiscordClient, leTrollBot: LeTr
                     Mono.justOrEmpty(event.message.content)
                             .flatMap { content: String ->
                                 Flux.fromIterable(commands.entries)
-                                        .filter { entry -> content.startsWith("!${entry.key}") }
-                                        .flatMap { entry -> entry.value(event) }
+                                        .filter { entry ->
+                                            content.toLowerCase().startsWith("!${entry.key.toLowerCase()}")
+                                        }.flatMap { entry -> entry.value(event) }
                                         .next()
                             }
                 }.subscribe()
