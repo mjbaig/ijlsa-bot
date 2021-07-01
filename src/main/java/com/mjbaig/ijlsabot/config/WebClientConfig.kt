@@ -1,4 +1,4 @@
-package com.mjbaig.ijlsabot.config.DiscordConfig
+package com.mjbaig.ijlsabot.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
