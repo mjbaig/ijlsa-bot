@@ -18,8 +18,6 @@ class PraiseTheSuns : CommandHandler {
 
         return event.message.addReaction(ReactionEmoji.custom(Snowflake.of(646521277640605696), "praisethesun", false)).then()
 
-//        return event.message.channel.flatMap { e ->
-//            e.createMessage("hi") }.then()
     }
 
     private fun sunsWin(event: MessageCreateEvent): Mono<Void> {
