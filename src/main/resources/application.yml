@@ -1,3 +1,7 @@
 security:
   basic:
     enabled: false
+
+discord:
+  token-uri: 'https://discord.com/api/oauth2/token'
+  token-revoke-uri: 'https://discord.com/api/oauth2/token/revoke'
