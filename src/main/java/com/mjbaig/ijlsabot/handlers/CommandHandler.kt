@@ -1,8 +1,8 @@
-package com.mjbaig.ijlsabot.bot
+package com.mjbaig.ijlsabot.handlers
 
 import discord4j.core.event.domain.message.MessageCreateEvent
 import reactor.core.publisher.Mono
 
-interface Bot {
+interface CommandHandler {
     fun getCommandMap(): Map<String, (MessageCreateEvent) -> Mono<Void>>
 }
