@@ -21,7 +21,9 @@ class PlayerStatsHandler(private val nbaStatsService: NBAStatsService) : Command
                 nbaStatsService.getPlayerByName(it[1], it[2])
             }
 
-        }.onErrorResume { e -> Mono.error(e) }
+        }.onErrorReturn(
+                Player()
+        )
 
         return player.flatMap { p ->
             event.message.channel.flatMap { messageChannel ->

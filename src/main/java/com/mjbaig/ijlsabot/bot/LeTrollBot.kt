@@ -31,7 +31,8 @@ open class LeTrollBot(discordClient: GatewayDiscordClient, commandHandlers: List
                                         }.flatMap { entry -> entry.value(event) }
                                         .next()
                             }
-                }.subscribe()
+                }.subscribe(null, {e -> logger.error(e.message, e)})
+
     }
 
 }

@@ -19,6 +19,8 @@ class NBAStatsService(var webClient: WebClient) {
             it?.league?.players?.first { player ->
                 player.firstName.equals(firstName, ignoreCase = true) && player.lastName.equals(lastName, ignoreCase = true)
             }.toMono()
+        }.doOnError {
+            logger.error("Could not find this player", it)
         }
     }
 
@@ -26,7 +28,7 @@ class NBAStatsService(var webClient: WebClient) {
         return webClient
                 .get()
                 .uri("http://data.nba.net/10s/prod/v1/2020/players.json").retrieve().bodyToMono(Players::class.java).toMono().doOnError {
-                    logger.error("Player Not Found", it)
+                    logger.error("Something went wrong with the player profile request", it)
                 }
     }
 
@@ -34,46 +36,46 @@ class NBAStatsService(var webClient: WebClient) {
 
 
 data class Players(
-        @JsonProperty("league") val league: League?
+        @JsonProperty("league") val league: League? = null,
 )
 
 data class League(
-        @JsonProperty("standard") val players: List<Player>?
+        @JsonProperty("standard") val players: List<Player>? = null,
 )
 
 data class Player(
-        @JsonProperty("firstName") val firstName: String?,
-        @JsonProperty("lastName") val lastName: String?,
-        @JsonProperty("temporaryDisplayName") val temporaryDisplayName: String?,
-        @JsonProperty("personId") val personId: String?,
-        @JsonProperty("teamId") val teamId: String?,
-        @JsonProperty("jersey") val jersey: String?,
-        @JsonProperty("isActive") val isActive: Boolean?,
-        @JsonProperty("pos") val position: String?,
-        @JsonProperty("heightFeet") val heightFeet: String?,
-        @JsonProperty("heightInches") val heightInches: String?,
-        @JsonProperty("heightMeters") val heightMeters: String?,
-        @JsonProperty("weightPounds") val weightPounds: String?,
-        @JsonProperty("weightKilograms") val weightKilograms: String?,
-        @JsonProperty("dateOfBirthUTC") val dateOfBirthUTC: String?,
-        @JsonProperty("teams") val teams: List<Team>,
-        @JsonProperty("draft") val draft: Draft,
-        @JsonProperty("nbaDebutYear") val nbaDebutYear: String?,
-        @JsonProperty("yearsPro") val yearsPro: String?,
-        @JsonProperty("collegeName") val collegeName: String?,
-        @JsonProperty("lastAffiliation") val lastAffiliation: String?,
-        @JsonProperty("country") val country: String?,
+        @JsonProperty("firstName") val firstName: String? = null,
+        @JsonProperty("lastName") val lastName: String? = null,
+        @JsonProperty("temporaryDisplayName") val temporaryDisplayName: String? = null,
+        @JsonProperty("personId") val personId: String? = null,
+        @JsonProperty("teamId") val teamId: String? = null,
+        @JsonProperty("jersey") val jersey: String? = null,
+        @JsonProperty("isActive") val isActive: Boolean? = null,
+        @JsonProperty("pos") val position: String? = null,
+        @JsonProperty("heightFeet") val heightFeet: String? = null,
+        @JsonProperty("heightInches") val heightInches: String? = null,
+        @JsonProperty("heightMeters") val heightMeters: String? = null,
+        @JsonProperty("weightPounds") val weightPounds: String? = null,
+        @JsonProperty("weightKilograms") val weightKilograms: String? = null,
+        @JsonProperty("dateOfBirthUTC") val dateOfBirthUTC: String? = null,
+        @JsonProperty("teams") val teams: List<Team>? = null,
+        @JsonProperty("draft") val draft: Draft? = null,
+        @JsonProperty("nbaDebutYear") val nbaDebutYear: String? = null,
+        @JsonProperty("yearsPro") val yearsPro: String? = null,
+        @JsonProperty("collegeName") val collegeName: String? = null,
+        @JsonProperty("lastAffiliation") val lastAffiliation: String? = null,
+        @JsonProperty("country") val country: String? = null,
 )
 
 data class Team(
-        @JsonProperty("teamId") val teamId: String?,
-        @JsonProperty("seasonStart") val seasonStart: String?,
-        @JsonProperty("seasonEnd") val seasonEnd: String?,
+        @JsonProperty("teamId") val teamId: String? = null,
+        @JsonProperty("seasonStart") val seasonStart: String? = null,
+        @JsonProperty("seasonEnd") val seasonEnd: String? = null,
 )
 
 data class Draft(
-        @JsonProperty("teamId") val teamId: String?,
-        @JsonProperty("pickNum") val pickNum: String?,
-        @JsonProperty("roundNum") val roundNum: String?,
-        @JsonProperty("seasonYear") val seasonYear: String?,
+        @JsonProperty("teamId") val teamId: String? = null,
+        @JsonProperty("pickNum") val pickNum: String? = null,
+        @JsonProperty("roundNum") val roundNum: String? = null,
+        @JsonProperty("seasonYear") val seasonYear: String? = null,
 )
