@@ -1,6 +1,6 @@
 package com.mjbaig.ijlsabot.bot
 
-import com.mjbaig.ijlsabot.handlers.PraiseTheSuns
+import com.mjbaig.ijlsabot.handlers.CommandHandler
 import discord4j.core.GatewayDiscordClient
 import discord4j.core.event.domain.message.MessageCreateEvent
 import org.slf4j.LoggerFactory.getLogger
@@ -9,21 +9,22 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
-open class LeTrollBot(discordClient: GatewayDiscordClient, praiseTheSuns: PraiseTheSuns) {
+open class LeTrollBot(discordClient: GatewayDiscordClient, commandHandlers: List<CommandHandler>) {
 
     private val logger = getLogger(LeTrollBot::class.java)
 
-    private val commands = mutableMapOf<String, (event: MessageCreateEvent) -> Mono<Void>>()
-
     init {
 
-        commands.putAll(praiseTheSuns.getCommandMap())
+        val commands: Map<String, (event: MessageCreateEvent) -> Mono<Void>> = commandHandlers.foldRight(mapOf()) { commandHandler, acc ->
+            acc + commandHandler.getCommandMap()
+        }
 
         discordClient
                 .on(MessageCreateEvent::class.java)
                 .flatMap { event ->
                     Mono.justOrEmpty(event.message.content)
                             .flatMap { content: String ->
+                                logger.info(content)
                                 Flux.fromIterable(commands.entries)
                                         .filter { entry ->
                                             content.toLowerCase().startsWith("!${entry.key.toLowerCase()}")

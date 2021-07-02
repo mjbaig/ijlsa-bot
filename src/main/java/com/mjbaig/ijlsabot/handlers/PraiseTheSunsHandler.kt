@@ -5,12 +5,13 @@ import discord4j.core.`object`.reaction.ReactionEmoji
 import discord4j.core.event.domain.message.MessageCreateEvent
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
 @Service
-class PraiseTheSuns : CommandHandler {
+open class PraiseTheSunsHandler(val webClient: WebClient) : CommandHandler {
 
-    private val logger = getLogger(PraiseTheSuns::class.java)
+    private val logger = getLogger(PraiseTheSunsHandler::class.java)
 
     private fun praiseTheSun(event: MessageCreateEvent): Mono<Void> {
 
